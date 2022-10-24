@@ -1,6 +1,6 @@
 require_relative "./PolyTreeNode.rb"
 class KnightPathFinder
-
+attr_accessor :starting_pos, :considered_positions
     def self.valid_moves(pos)
         moves = [[2,1],[2,-1],[1,2],[1,-2],[-1,2],[-1,-2],[-2,-1],[-2,1]]
         valid_m = []
@@ -21,7 +21,8 @@ class KnightPathFinder
     def initialize(starting_pos)
         @considered_positions = [starting_pos]
         @starting_pos = starting_pos
-        build_move_tree
+        @root = PolyTreeNode.new(@starting_pos)
+         build_move_tree
     end
 
     def new_move_positions(pos)
@@ -40,20 +41,36 @@ class KnightPathFinder
     def build_move_tree
         #set root node equal to starting pos
         #queue with root,
-        root = PolyTreeNode.new(@starting_pos)
-         queue = [root]
+        #  root = PolyTreeNode.new(@starting_pos)
+         queue = [@root]
             #until loop through queue
             until queue.empty?
                 shifted = queue.shift
                 new_move_positions(shifted.value).each do |move|
                     k = PolyTreeNode.new(move)
                     shifted.add_child(k)
-                    #add as a child to parent
                     queue << k
 
                 end
                
             end
-         @considered_positions.length
+         @considered_positions
+    end
+
+    def find_path(end_pos)
+       node = @root.dfs(end_pos)
+       trace_path_back(node)
+    end
+
+    def trace_path_back(pos)
+        path = [pos]
+        arr = []
+        
+        until arr.include?(@starting_pos) 
+            k = path.shift
+            path << k.parent if !k.parent.nil?
+            arr << k.value
+        end
+        arr.reverse
     end
 end
