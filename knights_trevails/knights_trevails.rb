@@ -1,5 +1,6 @@
 require_relative "./PolyTreeNode.rb"
 class KnightPathFinder
+
     def self.valid_moves(pos)
         moves = [[2,1],[2,-1],[1,2],[1,-2],[-1,2],[-1,-2],[-2,-1],[-2,1]]
         valid_m = []
@@ -9,7 +10,7 @@ class KnightPathFinder
             new_x = move[0] + x 
             new_y = move[1] + y 
             ##[2,-1] --> 
-            if new_x > 0 && new_x < 7 && new_y > 0 && new_y < 7
+            if new_x >= 0 && new_x <= 7 && new_y >= 0 && new_y <= 7
                 valid_m << [new_x, new_y]
             end
 
@@ -53,6 +54,6 @@ class KnightPathFinder
                 end
                
             end
-
+         @considered_positions.length
     end
 end
